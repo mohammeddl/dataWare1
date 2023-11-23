@@ -13,7 +13,7 @@
 
 <div style="background-image: url(img/create.png);" class="w-[100%] h-[100vh] flex items-center  bg-gray-50 bg-cover bg-center ">
 <div class="min-h-full flex flex-col md:ml-[50%]  justify-center py-12 sm:px-6 lg:px-8"><div>
-        <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow">
+        <img class="mx-auto h-[100px] w-auto" src="img/logo2.png" alt="Workflow">
         <h2 class="my-5 text-center text-3xl font-extrabold text-gray-900">
           Sign in to your account
         </h2>
