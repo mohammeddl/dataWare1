@@ -9,7 +9,7 @@
 <body>
 <nav class="flex justify-between bg-[#24698b] text-white w-full">
         <div class="xl:px-11 justify-between flex w-full items-center">
-            <a class="text-3xl font-bold font-heading" href="index.html">
+            <a class="text-3xl font-bold font-heading" href="#">
             <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
              <!-- Nav Links  -->
             <ul class="hidden md:flex px-10 ml-auto font-semibold font-heading space-x-12 max-md:gap-80 max-md:absolute max-md:right-0 max-md:top-[84px] max-md:bg-gray-950 max-md:h-[400px] max-md:w-[200px]"
