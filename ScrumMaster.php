@@ -1,3 +1,12 @@
+<?php
+
+
+include 'config.php';
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +108,7 @@
       </div>
 
 
-<div class="bg-gray-100 py-10">
+<div class="bg-gray-100 h-[100vh] py-10">
     <div class="mx-auto max-w-7xl">
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -119,66 +128,38 @@
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
                 
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Lindsay Walton</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">9887320990</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">lindsay.walton@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
-                    </td>
-                  </tr>
-                
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Courtney Henry</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">98873234</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">courtney.henry@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Courtney Henry</span></a>
-                    </td>
-                  </tr>
-                
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Tom Cook</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">9023448390</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">tom.cook@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Tom Cook</span></a>
-                    </td>
-                  </tr>
-                
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Whitney Francis</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">98430853498</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">whitney.francis@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Whitney Francis</span></a>
-                    </td>
-                  </tr>
-                
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Leonard Krasner</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">2348985498</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">leonard.krasner@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Leonard Krasner</span></a>
-                    </td>
-                  </tr>
-                
-                  <tr>
-                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">Floyd Miles</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">4323877854</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">floy.dmiles@example.com</td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
-                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Floyd Miles</span></a>
-                    </td>
-                  </tr>
-                
+              <?php
+              $sql = "SELECT * FROM persone";
+            $req = mysqli_query($conn, $sql);
+            while($row = mysqli_fetch_row($req)){
+                ?>
+                <tr>
+                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                <?php
+                $free=" ";
+                echo $row[1] ,$free,  $row[2]
+                ?>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <?php
+                    echo $row[5]
+                    ?>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <?php
+                    echo $row[3]
+                    ?>
+                </td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
+                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
+                </td>
+              </tr>
+
+                  <?php
+               }
+               ?>
+
               </tbody>
             </table>
           </div>
