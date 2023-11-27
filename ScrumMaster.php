@@ -115,7 +115,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <option value="<?=$personn['id']?> "><?=$personn['Nom']?></option>
     <?php
   } ?>
+  </select>
         <div class="flex justify-between mt-4">
+
             <button type="submit" name="submitAddMember" class="bg-green-500 text-white px-4 py-2 rounded-md">Add Member</button>
             <button type="submit" name="submitRemove" class="bg-red-500 text-white px-4 py-2 rounded-md">Remove Member</button>
         </div>
@@ -124,6 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
 <!-- cards -->
 <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide ">Teams</h2>
+
 <?php
 
 foreach($dataE as $equipe ){
@@ -156,6 +159,7 @@ foreach($dataE as $equipe ){
       <?php
 }
 ?>
+
 
 <div class="bg-gray-100 h-[100vh] py-10">
     <div class="mx-auto max-w-7xl">
