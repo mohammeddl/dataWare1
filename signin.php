@@ -14,15 +14,14 @@ $error = '';
       }
 
       if (mysqli_num_rows($result) > 0) {
-        // Fetch the data from the result set
+        
         $row = mysqli_fetch_assoc($result);
     
-        // Now you can use $row['column_name'] to access the values
+
         $id = $row['id'];
         $name = $row['Nom'];
         $rol = $row['Role'];
     
-        // Add any additional processing or redirection logic here
           echo "Login successful. Welcome, $rol!";
 
           switch($rol) {
@@ -36,9 +35,6 @@ $error = '';
               header("Location: ProductOwner.php"); 
               break; 
           }
-
-          
-
       } else {
         $error = "email or password is incorrect";
       }
