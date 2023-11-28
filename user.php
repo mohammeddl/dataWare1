@@ -1,8 +1,17 @@
 
 <?php
+  session_start();
+if($_SESSION['status']!= 'cleint'){
+  header("Location: signin.php");
+}
 include 'config.php';
 
-   
+
+$userId = $_SESSION['user_id'];
+$sql = "SELECT * FROM persons JOIN equipes JOIN projects WHERE persons.equipe_ID = equipes.id AND persons.project_ID = projects.id AND persons.id = $userId ";
+$euq = mysqli_query($conn, $sql);
+$row = mysqli_fetch_row($euq);
+
 
 
 ?>
@@ -92,7 +101,7 @@ include 'config.php';
           </div>
           <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
             <div class="flex-1 px-4 py-2 text-sm truncate">
-              <a href="#" class="text-gray-900 font-medium hover:text-gray-600">Graph API</a>
+              <a href="#" class="text-gray-900 font-medium hover:text-gray-600"><?=$row[12]?></a>
               <p class="text-gray-500">16 Members</p>
             </div>
             <div class="flex-shrink-0 pr-2">

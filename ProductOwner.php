@@ -3,6 +3,7 @@
 
 include 'config.php';
 
+session_start();
 $sql = "SELECT * FROM persons";
 $req = mysqli_query($conn, $sql);
 $sqlP = "SELECT * FROM projects";
@@ -10,7 +11,7 @@ $reqP = mysqli_query($conn, $sqlP);
 $dataP = array();
 $data = array();
 
-// Fetch each row as an associative array
+
 while ($row = mysqli_fetch_assoc($req)) {
     $data[] = $row;
 }
@@ -41,6 +42,15 @@ header("refresh:0.1");
   
 }
 
+  if (isset($_POST["assignScrumMaster"])) {
+      $projectId = $_POST["projectId"];
+      $scrumMasterId = $_POST["scrumMasterId"];
+
+      $sqlAssignScrumMaster = "UPDATE persons SET role = 'ScrumMaster', project_ID = $projectId WHERE id = $scrumMasterId";
+      mysqli_query($conn, $sqlAssignScrumMaster);
+  }
+
+
 ?>
 
 
@@ -57,22 +67,13 @@ header("refresh:0.1");
         <div class="xl:px-11 justify-between flex w-full items-center">
             <a class="text-3xl font-bold font-heading" href="#">
                 <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
-             <!-- Nav Links  -->
             <ul class="hidden md:flex px-10 ml-auto font-semibold font-heading space-x-12 max-md:gap-80 max-md:absolute max-md:right-0 max-md:top-[84px] max-md:bg-gray-950 max-md:h-[400px] max-md:w-[200px]"
                 id="nav-links">
-                <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] " href="#">Member</a></li>
+                <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] " href="#memberTable">Member</a></li>
                 <li class="max-md:my-8"><a class="hover:text-gray-200" href="#">Project</a></li>
-
+                <li class="max-md:my-8"><a class="hover:text-gray-200" href="#master">Scrum Master</a></li>
             </ul>
-            
         </div>
-          <!-- Responsive navbar  -->
-        <button class="md:hidden flex items-center cursor-pointer ml-2" id="burger-menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-300" fill="none" viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-        </button>
     </nav> 
 
 
@@ -131,7 +132,7 @@ if(isset($_POST['editProject'])){
 }
 ?>
 <!-- formEdit -->
-    <div class="my-20 flex justify-center ">
+    <div class="my-20 flex justify-center formEdit " >
       <form class="w-2/3" method="POST">
         
         <input value='<?=$editId?>' type="text" name="id_project"  class="hidden" />
@@ -152,7 +153,36 @@ if(isset($_POST['editProject'])){
   </form>
 
 </div>
-      <div class="-mx-4 overflow-x-auto sm:-mx-6 my-20 lg:-mx-8">
+
+<!-- form scrum -->
+
+<form  method="post">
+    <label for="projectId">Select Project:</label>
+    <select id="projectId" name="projectId" class="mt-1 p-2 w-full border rounded-md">
+        <?php
+        foreach ($data as $project) {
+            echo "<option value='{$project['id']}'>{$project['nom']}</option>";
+        }
+        ?>
+    </select>
+
+    <label for="scrumMasterId">Select Scrum Master:</label>
+    <select id="scrumMasterId" name="scrumMasterId" class="mt-1 p-2 w-full border rounded-md">
+        <?php
+        foreach ($dataP as $person) {
+            echo "<option value='{$person['id']}'>{$person['Nom']}</option>";
+        }
+        ?>
+    </select>
+
+    <button type="submit" name="assignScrumMaster">Assign Scrum Master</button>
+</form>
+
+
+<!-- project -->
+
+<div class="-mx-4 overflow-x-auto sm:-mx-6 my-20 lg:-mx-8">
+  <h2 class=" text-3xl m-6 font-semibold">Projects</h2>
         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
           <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
             <table class="min-w-full divide-y divide-gray-300">
@@ -188,7 +218,7 @@ if(isset($_POST['editProject'])){
                     <input type="text" name="name_project" value='<?=$project['nom']?>' class='hidden'>
                     <input type="text" name="Start_date" value='<?=$project['date_Debut']?>' class='hidden'>
                     <input type="text" name="End_date" value='<?=$project['date_Fin']?>' class='hidden'>
-                    <button type='submit' name='editProject' class="editButton text-indigo-600 hover:text-indigo-900">Edit</button>
+                    <button type='submit' name='editProject' id="editProject"  class="editButton text-indigo-600 hover:text-indigo-900">Edit</button>
                   </form>
                 </td>
               </tr>
@@ -202,7 +232,10 @@ if(isset($_POST['editProject'])){
       </div>
 
       
-  <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+
+      <!-- ScrumMaster -->
+    <h2 class="text-3xl my-6 font-semibold">ScrumMaster</h2>
+  <ul role="list"id="master" class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     
   <?php
               
@@ -256,8 +289,9 @@ if(isset($_POST['editProject'])){
       </ul>
             
 
-
-      <div class="bg-gray-100 h-[100vh] py-10">
+    <!-- member -->
+    <div class="bg-gray-100 h-[100vh] py-10" id="memberTable">
+        <h2 class="text-3xl my-6 font-semibold">Members</h2>
     <div class="mx-auto max-w-7xl">
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -316,6 +350,6 @@ if(isset($_POST['editProject'])){
     </div>
     
   </div>
-
+<script src="js/script.js"></script>
 </body>
 </html>

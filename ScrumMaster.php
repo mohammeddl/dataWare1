@@ -2,6 +2,7 @@
 
 
 include 'config.php';
+session_start();
 $sqlEquipe = "SELECT * FROM equipes";
 $reqEquipes = mysqli_query($conn, $sqlEquipe);
 $dataE = array();
@@ -29,20 +30,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_query($conn,$sqlAddName);
   }
 
-  // if (isset($_POST["submitAddMember"])) {
-  //     $teamName = $_POST["teamNameSelect"];
-  //     $memberName = $_POST["memberName"];
-  //     // $sqlAddMember = "INSERT INTO persons (nameTeams, memberName) VALUES ('$teamName', '$memberName')";
-  //     mysqli_query($conn, $sqlAddMember);
+  if (isset($_POST["submitAddMember"])) {
+      $teamName = $_POST["teamNameSelect"];
+      $memberid = $_POST["memberName"];
+      $a = "UPDATE persons SET equipe_ID = $teamName where id = $memberid";
+      mysqli_query($conn, $a);
       
-  // }
+  }
 
-  // if (isset($_POST["submitRemove"])) {
-  //     $teamName = $_POST["teamNameSelect"];
-  //     $memberName = $_POST["memberName"];
-  //     $sqlRemoveMember = "DELETE FROM  WHERE teamName = '$teamName' AND memberName = '$memberName'";
-  //   mysqli_query($conn, $sqlRemoveMember);
-  // }
+  if (isset($_POST["submitRemove"])) {
+      
+      $memberid = $_POST["memberName"];
+      $sqlRemoveMember = "UPDATE persons SET equipe_ID = NULL where id = $memberid";
+    mysqli_query($conn, $sqlRemoveMember);
+  }
+
+  // Delete Team
+  if (isset($_POST["deleteTeam"])) {
+    $teamId = $_POST["teamId"];
+    $sqlRemoveMembers = "UPDATE persons SET equipe_ID = NULL WHERE equipe_ID = $teamId";
+    mysqli_query($conn, $sqlRemoveMembers);
+    $sqlDeleteTeam = "DELETE FROM equipes WHERE id = $teamId";
+    mysqli_query($conn, $sqlDeleteTeam);
+
+}
 }
 
 ?>
@@ -57,15 +68,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
-<nav class="flex justify-between bg-[#24698b] text-white w-full">
+<nav class=" fixed flex justify-between bg-[#24698b] text-white w-full">
         <div class="xl:px-11 justify-between flex w-full items-center">
             <a class="text-3xl font-bold font-heading" href="#">
-            <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
-          <!-- Nav Links  -->
+                <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
+             <!-- Nav Links  -->
             <ul class="hidden md:flex px-10 ml-auto font-semibold font-heading space-x-12 max-md:gap-80 max-md:absolute max-md:right-0 max-md:top-[84px] max-md:bg-gray-950 max-md:h-[400px] max-md:w-[200px]"
                 id="nav-links">
-                <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] ">Member</a></li>
-                <li class="max-md:my-8"><a class="hover:text-gray-200" >Teams</a></li>
+                <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] " href="#memberTable">Member</a></li>
+                <li class="max-md:my-8"><a class="hover:text-gray-200" href="#teamsTeble">Teams</a></li>
 
             </ul>
             
@@ -80,10 +91,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </nav> 
 
     <div class="bg-gray-100 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mt-24 mx-auto px-4 sm:px-6 lg:px-8">
       
 
-<div class="max-w-md mx-auto bg-white p-8 rounded shadow-md">
+<div class="max-w-md  mx-auto bg-white p-8 rounded shadow-md">
     <h1 class="text-2xl font-semibold mb-4">Team Management</h1>
    <!-- Add Team Form -->
     <form action="ScrumMaster.php" method="post" class="mb-6">
@@ -125,43 +136,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </div>
 
 <!-- cards -->
-<h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide ">Teams</h2>
+<h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide mt-16" id="teamsTeble">Teams</h2>
 
 <?php
-
-foreach($dataE as $equipe ){
-  ?>
-  <div>
-    <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-      <li class="col-span-1 flex shadow-sm rounded-md">
-          <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md">
-          <?php $test=$equipe['nameTeams'] ; 
-          $firstCharacter = $test[0];
-          echo $firstCharacter;?>
-          </div>
-          <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
-            <div class="flex-1 px-4 py-2 text-sm truncate">
-              <a href="#" class="text-gray-900 font-medium hover:text-gray-600"><?=$equipe['nameTeams']?></a>
-              <p class="text-gray-500">16 Members</p>
-            </div>
-            <div class="flex-shrink-0 pr-2">
-              <button type="button" class="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <span class="sr-only">Open options</span>
-                <svg class="w-5 h-5" x-description="Heroicon name: solid/dots-vertical" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-  <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
-</svg>
-              </button>
-            </div>
-          </div>
-        </li>
-      </ul>
-      </div>
-      <?php
+foreach ($dataE as $equipe) {
+    ?>
+    <div>
+        <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <li class="col-span-1 flex shadow-sm rounded-md w-[60vh]">
+                <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md ">
+                    <?php $test = $equipe['nameTeams'];
+                    $firstCharacter = $test[0];
+                    echo $firstCharacter; ?>
+                </div>
+                <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+                    <div class="flex-1 px-4 py-2 text-sm truncate">
+                        <a href="#" class="text-gray-900 font-medium hover:text-gray-600"><?= $equipe['nameTeams'] ?></a>
+                        <p class="text-gray-500">Members:
+                            <?php
+                            $teamMembers = array_filter($dataP, function ($person) use ($equipe) {
+                                return $person['equipe_ID'] == $equipe['id'];
+                            });
+                            foreach ($teamMembers as $member) {
+                                echo $member['Nom'] . ', ';
+                            }
+                            ?>
+                        </p>
+                    </div>
+                    <div class="flex-shrink-0 pr-2">
+                        <form method="post" action="ScrumMaster.php">
+                            <input type="hidden" name="teamId" value="<?= $equipe['id']?>">
+                            <button type="submit" name="deleteTeam" class="w-8 h-8 bg-slate-800 inline-flex items-center justify-center text-slate rounded-full bg-transparent hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2">
+                                <span class="sr-only">Delete team</span>
+                                <svg class="w-5 h-5" x-description="Heroicon name: solid/trash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M5 2a2 2 0 012-2h6a2 2 0 012 2h2a1 1 0 110 2h-1v12a2 2 0 01-2 2H8a2 2 0 01-2-2V4H5a1 1 0 110-2h2zM4 7a1 1 0 011-1h10a1 1 0 010 2H5a1 1 0 01-1-1zM6 11a1 1 0 112 0v5a1 1 0 11-2 0v-5zm5 0a1 1 0 112 0v5a1 1 0 11-2 0v-5z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+<?php
 }
 ?>
 
 
-<div class="bg-gray-100 h-[100vh] py-10">
+<!-- member -->
+<div class="bg-gray-100 my-10 h-[100vh] py-10" id="memberTable">
     <div class="mx-auto max-w-7xl">
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -201,7 +224,7 @@ foreach($dataE as $equipe ){
                     echo $personn['Email']
                     ?>
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Member</td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><?=$personn['Role']?></td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                   <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit<span class="sr-only">, Lindsay Walton</span></a>
                 </td>
@@ -221,5 +244,6 @@ foreach($dataE as $equipe ){
 
     </div>
   </div>
+
 </body>
 </html>

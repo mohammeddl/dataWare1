@@ -38,10 +38,10 @@ if(isset($_POST['submit'])){
 <div style="background-image: url(img/create.png);" class="w-[100%] h-[100vh] flex items-center  bg-gray-50 bg-cover bg-center ">
 <div class="min-h-full flex flex-col md:ml-[50%]  justify-center py-12 sm:px-6 lg:px-8"><div>
         <img class="mx-auto h-[100px] w-auto" src="img/logo2.png" alt="Workflow">
-        <h2 class="my-5 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
         <div class=" bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <h2 class="my-5 text-center text-3xl font-extrabold text-gray-900">
+            Sign Up
+          </h2>
 <form method="POST" action="">
     <div class="relative z-0 w-full mb-6 group">
         <input type="text" name="first_name"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />

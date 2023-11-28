@@ -1,44 +1,45 @@
 <?php
+session_start();
 include 'config.php';
 
 $error = '';
 
-    if(isset($_POST['submit'])){
-      $email = $_POST['email'];
-      $pass = $_POST['pass'];
-      $sql = "SELECT * FROM persons where email = '$email' and pass = '$pass'";
-      $result = mysqli_query($conn,$sql);
-        
-      if (!$result) {
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+    $sql = "SELECT * FROM persons WHERE email = '$email' AND pass = '$pass'";
+    $result = mysqli_query($conn, $sql);
+
+    if (!$result) {
         die('Error in the query: ' . mysqli_error($conn));
-      }
-
-      if (mysqli_num_rows($result) > 0) {
-        
-        $row = mysqli_fetch_assoc($result);
-    
-
-        $id = $row['id'];
-        $name = $row['Nom'];
-        $rol = $row['Role'];
-    
-          echo "Login successful. Welcome, $rol!";
-
-          switch($rol) {
-            case "member":
-              header("Location: user.php");  
-              break;
-            case "scrumMaster":
-              header("Location: ScrumMaster.php"); 
-              break; 
-            case "productOwner":
-              header("Location: ProductOwner.php"); 
-              break; 
-          }
-      } else {
-        $error = "email or password is incorrect";
-      }
     }
+
+    if (mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+
+        $_SESSION['user_id'] = $row['id'];
+        $_SESSION['user_name'] = $row['Nom'];
+        $_SESSION['user_role'] = $row['Role'];
+       
+
+        echo "Login successful. Welcome, {$_SESSION['user_name']}!";
+
+        switch ($_SESSION['user_role']) {
+            case "ScrumMaster":
+                header("Location: ScrumMaster.php");
+                exit;
+            case "productOwner":
+                header("Location: ProductOwner.php");
+                exit;
+            case "member":
+              $_SESSION['status']= 'cleint';
+                header("Location: user.php");
+                exit;
+        }
+    } else {
+        $error = "Email or password is incorrect";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,13 +56,13 @@ $error = '';
     <div class="min-h-full w-2/3 flex flex-col  justify-center py-12 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <img class="mx-auto h-[100px] w-auto" src="img/logo2.png" alt="Workflow">
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
       </div>
-  
-      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      
+      <div class=" sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          <h2 class="my-14 text-center text-3xl font-extrabold text-gray-900">
+            Sign in to your account
+          </h2>
           <form class="space-y-6" action="" method="POST">
             <div>
               <label for="email" class="block text-sm font-medium text-gray-700">
@@ -83,7 +84,7 @@ $error = '';
   
               <div class="text-sm">
                 <a href="create.php" class="font-medium text-[#24698b] hover:text-indigo-500">
-                Create and account ?
+                Create an account 
                 </a>
               </div>
   
