@@ -155,12 +155,12 @@ if(isset($_POST['editProject'])){
 </div>
 
 <!-- form scrum -->
-
+<h2 class=" text-3xl m-6 font-semibold">Select ScrumMaster To Projects</h2>
 <form  method="post">
     <label for="projectId">Select Project:</label>
     <select id="projectId" name="projectId" class="mt-1 p-2 w-full border rounded-md">
         <?php
-        foreach ($data as $project) {
+        foreach ($dataP as $project) {
             echo "<option value='{$project['id']}'>{$project['nom']}</option>";
         }
         ?>
@@ -169,13 +169,13 @@ if(isset($_POST['editProject'])){
     <label for="scrumMasterId">Select Scrum Master:</label>
     <select id="scrumMasterId" name="scrumMasterId" class="mt-1 p-2 w-full border rounded-md">
         <?php
-        foreach ($dataP as $person) {
+        foreach ($data as $person) {
             echo "<option value='{$person['id']}'>{$person['Nom']}</option>";
         }
         ?>
     </select>
 
-    <button type="submit" name="assignScrumMaster">Assign Scrum Master</button>
+    <button type="submit" name="assignScrumMaster" class="text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"">Assign Scrum Master</button>
 </form>
 
 
