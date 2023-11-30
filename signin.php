@@ -23,18 +23,26 @@ if (isset($_POST['submit'])) {
        
 
         echo "Login successful. Welcome, {$_SESSION['user_name']}!";
+        
+
+
+        if($_SESSION['status']= 'ProductOwner'){
+          header("Location: ProductOwner.php");
+        }
 
         switch ($_SESSION['user_role']) {
             case "ScrumMaster":
+              $_SESSION['status']= 'ScrumMaster';
                 header("Location: ScrumMaster.php");
                 exit;
-            case "productOwner":
-                header("Location: ProductOwner.php");
-                exit;
-            case "member":
-              $_SESSION['status']= 'cleint';
-                header("Location: user.php");
-                exit;
+                case "member":
+                  $_SESSION['status']= 'user';
+                  header("Location: user.php");
+                  exit;
+                case "productOwner":
+                  $_SESSION['status']= 'ProductOwner';
+                    header("Location: ProductOwner.php");
+                    exit;
         }
     } else {
         $error = "Email or password is incorrect";

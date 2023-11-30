@@ -1,9 +1,12 @@
 <?php
-
+session_start();
+if($_SESSION['user_role']!= 'ProductOwner'){
+  header("Location: signin.php");
+}
 
 include 'config.php';
 
-session_start();
+
 $sql = "SELECT * FROM persons";
 $req = mysqli_query($conn, $sql);
 $sqlP = "SELECT * FROM projects";
@@ -170,8 +173,9 @@ if(isset($_POST['editProject'])){
     <select id="scrumMasterId" name="scrumMasterId" class="mt-1 p-2 w-full border rounded-md">
         <?php
         foreach ($data as $person) {
+          if($person['Role'] == 'ScrumMaster'){
             echo "<option value='{$person['id']}'>{$person['Nom']}</option>";
-        }
+        }}
         ?>
     </select>
 
@@ -350,6 +354,6 @@ if(isset($_POST['editProject'])){
     </div>
     
   </div>
-<script src="js/script.js"></script>
+
 </body>
 </html>

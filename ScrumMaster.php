@@ -1,8 +1,11 @@
 <?php
 
-
-include 'config.php';
 session_start();
+if($_SESSION['user_role']!= 'ScrumMaster'){
+  header("Location: signin.php");
+}
+include 'config.php';
+
 $sqlEquipe = "SELECT * FROM equipes";
 $reqEquipes = mysqli_query($conn, $sqlEquipe);
 $dataE = array();

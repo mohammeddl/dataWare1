@@ -1,7 +1,7 @@
 
 <?php
   session_start();
-if($_SESSION['status']!= 'cleint'){
+if($_SESSION['user_role']!= 'member'){
   header("Location: signin.php");
 }
 include 'config.php';
@@ -97,7 +97,7 @@ $row = mysqli_fetch_row($euq);
       
         <li class="col-span-1 flex shadow-sm rounded-md">
           <div class="flex-shrink-0 flex items-center justify-center w-16 bg-teal-600 text-white text-sm font-medium rounded-l-md">
-            GA
+            Peoject
           </div>
           <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
             <div class="flex-1 px-4 py-2 text-sm truncate">
