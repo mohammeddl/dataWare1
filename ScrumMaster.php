@@ -6,6 +6,13 @@ if($_SESSION['user_role']!= 'ScrumMaster'){
 }
 include 'config.php';
 
+function dd($data)
+{
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+    exit; 
+}
 $sqlEquipe = "SELECT * FROM equipes";
 $reqEquipes = mysqli_query($conn, $sqlEquipe);
 $dataE = array();
@@ -15,12 +22,21 @@ $sqlpesron = "SELECT * FROM persons";
 $reqPersons = mysqli_query($conn,$sqlpesron);
 $dataP =array();
 
+
+$sqlProject = "SELECT * FROM projects";
+$reqProject= mysqli_query($conn,$sqlProject);
+$dataProject = array();
+
 while ($rowP = mysqli_fetch_assoc($reqPersons)){
   $dataP[]= $rowP;
 }
 
 while ($rowE = mysqli_fetch_assoc($reqEquipes)){
   $dataE[]= $rowE;
+}
+
+while ($rowProject = mysqli_fetch_assoc($reqProject)){
+  $dataProject[]= $rowProject;
 }
 
 
@@ -48,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_query($conn, $sqlRemoveMember);
   }
 
-  // Delete Team
+  // delete team
   if (isset($_POST["deleteTeam"])) {
     $teamId = $_POST["teamId"];
     $sqlRemoveMembers = "UPDATE persons SET equipe_ID = NULL WHERE equipe_ID = $teamId";
@@ -56,6 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $sqlDeleteTeam = "DELETE FROM equipes WHERE id = $teamId";
     mysqli_query($conn, $sqlDeleteTeam);
 
+}
+
+// select equipe to project
+if (isset($_POST["submitAddProject"])){
+  $teamName = $_POST["projectNameSelect"];
+  $SelectProject = $_POST["teamNameSelectProject"];
+  $sqlSelect ="UPDATE equipes SET project_ID =$teamName  where id = $SelectProject";
+  $teest = mysqli_query($conn, $sqlSelect);
 }
 }
 
@@ -124,27 +148,64 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="memberName" class="block mt-4 text-sm font-medium text-gray-700">Member Name:</label>
         <select id="memberName" name="memberName" class="mt-1 p-2 w-full border rounded-md">
         <?php
+        
     foreach($dataP as $personn ){
+      if($personn['Role'] === "member" && empty($personn['equipe_ID'])){
       ?>
-        <option value="<?=$personn['id']?> "><?=$personn['Nom']?></option>
+        <option value="<?=$personn['id']?>"><?=$personn['Nom']?></option>
     <?php
-  } ?>
+  }} ?>
   </select>
-        <div class="flex justify-between mt-4">
-
+   </select>
+        <div class="flex justify-between py-4">
             <button type="submit" name="submitAddMember" class="bg-green-500 text-white px-4 py-2 rounded-md">Add Member</button>
             <button type="submit" name="submitRemove" class="bg-red-500 text-white px-4 py-2 rounded-md">Remove Member</button>
         </div>
     </form>
 </div>
 
-<!-- cards -->
-<h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide mt-16" id="teamsTeble">Teams</h2>
 
+<!-- Add Project to Team Form -->
+<div class="max-w-md mx-auto bg-white my-20 p-8 rounded shadow-md">
+<h2 class=" w-[70vh]  mx-auto text-3xl m-6 font-semibold">Add Project to Team </h2>
+    <form action="" method="post" class="mb-6">
+        <label for="projectNameSelect" class="block mt-4 text-sm font-medium text-gray-700">Select Project:</label>
+        <select id="projectNameSelect" name="projectNameSelect" class="mt-1 p-2 w-full border rounded-md">
+            <?php
+            foreach ($dataProject as $project) {
+            ?>
+                <option value="<?=$project['id']?>"> <?= $project['nom'] ?></option>
+            <?php
+            }
+            ?>
+        </select>
+
+        <label for="teamNameSelectProject" class="block text-sm font-medium text-gray-700">Select Team:</label>
+        <select id="teamNameSelectProject" name="teamNameSelectProject" class="mt-1 p-2 w-full border rounded-md">
+            <?php
+            foreach ($dataE as $equipe) {
+            ?>
+                <option value="<?= $equipe['id'] ?>"> <?= $equipe['nameTeams'] ?></option>
+            <?php
+            } ?>
+        </select>
+
+        <div class="flex justify-between mt-4">
+            <button type="submit" name="submitAddProject" class="bg-green-500 text-white px-4 py-2 rounded-md">Add Project to Team</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+<!-- cards -->
+<h2 class=" w-[70vh]  mx-auto text-3xl m-6 font-semibold"id="teamsTeble">Teams</h2>
 <?php
 foreach ($dataE as $equipe) {
-    ?>
-    <div>
+  ?>
+    <div class=" w-[70vh]  mx-auto ">
+      <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide mt-16" >Teams</h2>
         <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <li class="col-span-1 flex shadow-sm rounded-md w-[60vh]">
                 <div class="flex-shrink-0 flex items-center justify-center w-16 bg-pink-600 text-white text-sm font-medium rounded-l-md ">
@@ -188,6 +249,7 @@ foreach ($dataE as $equipe) {
 
 <!-- member -->
 <div class="bg-gray-100 my-10 h-[100vh] py-10" id="memberTable">
+<h2 class="text-3xl my-6 font-semibold">Members</h2>
     <div class="mx-auto max-w-7xl">
     <div class="mt-8 flex flex-col">
       <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">

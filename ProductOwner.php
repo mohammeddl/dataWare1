@@ -31,8 +31,6 @@ function dd($data)
     exit; 
 }
 
-// dd($data);
-
 
 if(isset($_POST['toggleRole'])) {
   $id = $_POST['id'];
@@ -48,7 +46,6 @@ header("refresh:0.1");
   if (isset($_POST["assignScrumMaster"])) {
       $projectId = $_POST["projectId"];
       $scrumMasterId = $_POST["scrumMasterId"];
-
       $sqlAssignScrumMaster = "UPDATE persons SET role = 'ScrumMaster', project_ID = $projectId WHERE id = $scrumMasterId";
       mysqli_query($conn, $sqlAssignScrumMaster);
   }
@@ -97,15 +94,10 @@ $editDateEnd = '';
       $projectName = $_POST['name_project'];
       $dateS = $_POST['Start_date'];
       $dateE = $_POST['End_date'];
-  
-    
-   
       $sqlAddProject="INSERT INTO projects (nom, date_Debut, date_Fin )
       VALUES('$projectName','$dateS','$dateE')";
-  
       mysqli_query($conn, $sqlAddProject);
-
-    $_POST = array();
+      $_POST = array();
 }
 
 if(isset($_POST['submitEditProject'])) {
@@ -115,10 +107,10 @@ if(isset($_POST['submitEditProject'])) {
   $idProjectEdit = $_POST['id_project'];
   
       $sqlEditProject = "UPDATE projects SET nom ='$projectName', date_Debut='$dateS', date_Fin ='$dateE' WHERE id = $idProjectEdit";
-    mysqli_query($conn, $sqlEditProject);
+      mysqli_query($conn, $sqlEditProject);
 
 
-      $editId= '';
+      $editId = '';
       $editName = '';
       $editDateStart = '';
       $editDateEnd = '';
@@ -135,6 +127,7 @@ if(isset($_POST['editProject'])){
 }
 ?>
 <!-- formEdit -->
+<h2 class="text-3xl m-6 font-semibold">Add Projects</h2>
     <div class="my-20 flex justify-center formEdit " >
       <form class="w-2/3" method="POST">
         
@@ -178,8 +171,9 @@ if(isset($_POST['editProject'])){
         }}
         ?>
     </select>
-
-    <button type="submit" name="assignScrumMaster" class="text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"">Assign Scrum Master</button>
+    <div class="py-4">
+    <button type="submit" name="assignScrumMaster" class=" text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"">Assign Scrum Master</button>
+    </div>
 </form>
 
 
@@ -195,8 +189,9 @@ if(isset($_POST['editProject'])){
                   <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Projects</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start date</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">End date</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Edit Projects</th>
                   <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span class="sr-only">Edit</span>
+                    
                   </th>
                 </tr>
               <?php
@@ -249,13 +244,12 @@ if(isset($_POST['editProject'])){
 
       <li class="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200">
         <div class="flex-1 flex flex-col p-8">
-          <img class="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src="img/daali.jpg" alt="">
+          <img class="w-32 h-32 flex-shrink-0 mx-auto rounded-full" src="img/scrummaster.png" alt="">
           <h3 class="mt-6 text-gray-900 text-sm font-medium">
             <?=$person['Nom'] . " " .  $person['Prenom']?>
           </h3>
           <dl class="mt-1 flex-grow flex flex-col justify-between">
             <dt class="sr-only">Title</dt>
-            <dd class="text-gray-500 text-sm">Paradigm Representative</dd>
             <dt class="sr-only">Role</dt>
             <dd class="mt-3">
               <span class="px-2 py-1 text-green-800 text-xs font-medium bg-green-100 rounded-full">
@@ -308,8 +302,8 @@ if(isset($_POST['editProject'])){
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Phone</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
+                  <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Edit Role</th>
                   <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span class="sr-only">Edit</span>
                   </th>
                 </tr>
               </thead>
