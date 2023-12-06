@@ -78,7 +78,7 @@ header("refresh:0.1");
 
 
     <!-- Card -->
-    <div class="bg-gray-100 py-24">
+    <div class="bg-gray-100 py-24 ">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     
@@ -97,7 +97,7 @@ $editDateEnd = '';
       $sqlAddProject="INSERT INTO projects (nom, date_Debut, date_Fin )
       VALUES('$projectName','$dateS','$dateE')";
       mysqli_query($conn, $sqlAddProject);
-      $_POST = array();
+      
 }
 
 if(isset($_POST['submitEditProject'])) {
@@ -125,12 +125,34 @@ if(isset($_POST['editProject'])){
   $editDateStart = $_POST ['Start_date'];
   $editDateEnd =  $_POST ['End_date'];
 }
+
+
+if(isset($POST['submitDelete'])){
+
+  $sqlRemoveMembers = "UPDATE project SET   "
+}
 ?>
+
+
+
+<form method="POST">
+
+<button type="submit" name="submitDelete" class=" text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:hover:bg-blue-700 ">DELETE</button>
+<input value='<?=$editId?>' type="text" name="id_project"  class="hidden" />
+<input value='<?=$editId?>' type="text" name="id_project"  class="hidden" />
+<input value='<?=$editId?>' type="text" name="id_project"  class="hidden" />
+</form>
+
+
+
+
 <!-- formEdit -->
 <h2 class="text-3xl m-6 font-semibold">Add Projects</h2>
-    <div class="my-20 flex justify-center formEdit " >
-      <form class="w-2/3" method="POST">
-        
+<div class="my-20 flex justify-center formEdit " >
+  <form class="w-2/3" method="POST">
+    <div class="p-10">
+        <button type="submit" class=" text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:hover:bg-blue-700 ">Add Project</button>
+    </div>    
         <input value='<?=$editId?>' type="text" name="id_project"  class="hidden" />
     <div class="relative z-0 w-full mb-6 group">
         <input value='<?=$editName?>' type="text" name="name_project"  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" />
@@ -172,7 +194,7 @@ if(isset($_POST['editProject'])){
         ?>
     </select>
     <div class="py-4">
-    <button type="submit" name="assignScrumMaster" class=" text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"">Assign Scrum Master</button>
+    <button type="submit" name="assignScrumMaster" class=" text-white bg-[#24698b] hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Assign Scrum Master</button>
     </div>
 </form>
 
@@ -190,9 +212,6 @@ if(isset($_POST['editProject'])){
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start date</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">End date</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Edit Projects</th>
-                  <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    
-                  </th>
                 </tr>
               <?php
               
@@ -212,7 +231,7 @@ if(isset($_POST['editProject'])){
                   <?=$project['date_Fin']?>
                 </td>
                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <form method="post">
+                  <form method="post" class="flex items-center">
                     <input type="text" name="idProject" value='<?=$project['id']?>' class='hidden'>
                     <input type="text" name="name_project" value='<?=$project['nom']?>' class='hidden'>
                     <input type="text" name="Start_date" value='<?=$project['date_Debut']?>' class='hidden'>
@@ -303,8 +322,6 @@ if(isset($_POST['editProject'])){
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
                   <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Edit Role</th>
-                  <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                  </th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
@@ -327,7 +344,7 @@ if(isset($_POST['editProject'])){
                   <form method="post">
                     <input type="text" name="id" value=<?=$person['id']?> class='hidden'>
                     <input type="text" name="role" value=<?=$person['Role']?> class='hidden'>
-                    <button type='submit' name='toggleRole' class="editButton text-indigo-600 hover:text-indigo-900">Edit</button>
+                    <button type='submit' name='toggleRole' class="editButton text-indigo-600 hover:text-indigo-900 ">Edit</button>
                   </form>
                 </td>
               </tr>
@@ -348,6 +365,7 @@ if(isset($_POST['editProject'])){
     </div>
     
   </div>
+
 
 </body>
 </html>

@@ -99,7 +99,7 @@ if (isset($_POST["submitAddProject"])){
         <div class="xl:px-11 justify-between flex w-full items-center">
             <a class="text-3xl font-bold font-heading" href="#">
                 <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
-             <!-- Nav Links  -->
+
             <ul class="hidden md:flex px-10 ml-auto font-semibold font-heading space-x-12 max-md:gap-80 max-md:absolute max-md:right-0 max-md:top-[84px] max-md:bg-gray-950 max-md:h-[400px] max-md:w-[200px]"
                 id="nav-links">
                 <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] " href="#memberTable">Member</a></li>
@@ -108,7 +108,7 @@ if (isset($_POST["submitAddProject"])){
             </ul>
             
         </div>
-          <!-- Responsive navbar  -->
+
         <button class="md:hidden flex items-center cursor-pointer ml-2" id="burger-menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-300" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -124,7 +124,7 @@ if (isset($_POST["submitAddProject"])){
 <div class="max-w-md  mx-auto bg-white p-8 rounded shadow-md">
     <h1 class="text-2xl font-semibold mb-4">Team Management</h1>
    <!-- Add Team Form -->
-    <form action="ScrumMaster.php" method="post" class="mb-6">
+    <form  method="post" class="mb-6">
         <label for="teamName" class="block text-sm font-medium text-gray-700">Team Name:</label>
         <input type="text" id="teamName" name="teamName" class="mt-1 p-2 w-full border rounded-md">
 
@@ -134,7 +134,7 @@ if (isset($_POST["submitAddProject"])){
     </form>
 
     <!-- Manage Team Members Form -->
-    <form action="ScrumMaster.php" method="post">
+    <form  method="post">
         <label for="teamNameSelect" class="block text-sm font-medium text-gray-700">Select Team:</label>
         <select id="teamNameSelect" name="teamNameSelect" class="mt-1 p-2 w-full border rounded-md">
     <?php

@@ -14,13 +14,19 @@ function dd($data)
     exit; 
 }
 $userId = $_SESSION['user_id'];
-$sql = "SELECT * FROM persons JOIN equipes JOIN projects WHERE persons.equipe_ID = equipes.id AND persons.id = $userId ";
+$sql = "SELECT * FROM persons JOIN equipes JOIN projects WHERE persons.equipe_ID = equipes.id ";
 $euq = mysqli_query($conn, $sql);
 $row = mysqli_fetch_row($euq);
 
+$test = "SELECT * FROM persons JOIN equipes WHERE persons.equipe_ID = equipes.id";
+$euq2 = mysqli_query($conn, $test);
+$data = array();
 
 
 
+while ($rowmember = mysqli_fetch_row($euq2)){
+  $data[]= $rowmember;
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +42,7 @@ $row = mysqli_fetch_row($euq);
         <div class="xl:px-11 justify-between flex w-full items-center">
             <a class="text-3xl font-bold font-heading" href="#">
             <img class="h-[70px] logo" src="img/logo.png" alt="logo"></a>
-             <!-- Nav Links  -->
+
             <ul class="hidden md:flex px-10 ml-auto font-semibold font-heading space-x-12 max-md:gap-80 max-md:absolute max-md:right-0 max-md:top-[84px] max-md:bg-gray-950 max-md:h-[400px] max-md:w-[200px]"
                 id="nav-links">
                 <li class="max-md:my-8"><a class="hover:text-gray-200 max-md:ml-[50px] " href="#">Member</a></li>
@@ -45,7 +51,6 @@ $row = mysqli_fetch_row($euq);
             </ul>
             
         </div>
-          <!-- Responsive navbar  -->
         <button class="md:hidden flex items-center cursor-pointer ml-2" id="burger-menu">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-300" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
@@ -57,19 +62,28 @@ $row = mysqli_fetch_row($euq);
     <?php
     if(!empty($row[1])){
       ?>
-    <div class="bg-gray-100 py-8 flex justify-center h-[100vh]">
+    <div class="bg-gray-100 py-8 flex justify-center h-[100vh] ">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-gray-500 text-xs font-medium uppercase tracking-wide">Teams</h2>
     <ul role="list" class="mt-3 grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
       
         <li class="col-span-1 flex shadow-sm rounded-md">
           <div class="flex-shrink-0 flex items-center justify-center w-16 bg-teal-600 text-white text-sm font-medium rounded-l-md">
-            Peoject
+            <?=$row[12]?>
           </div>
-          <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md truncate">
+          <div class="flex-1 flex items-center justify-between border-t border-r border-b border-gray-200 bg-white rounded-r-md w-[500px] truncate">
             <div class="flex-1 px-4 py-2 text-sm truncate">
               <a href="#" class="text-gray-900 font-medium hover:text-gray-600"><?=$row[12]?></a>
-              <p class="text-gray-500"><?=$row[1]?></p>
+              <?php
+      }
+      ?>
+              <?php
+              foreach($data as $affich){
+                ?>
+              <p class="text-gray-500"><?= $affich[1]?></p>
+              <?php
+            }
+            ?>
             </div>
             <div class="flex-shrink-0 pr-2">
               <button type="button" class="w-8 h-8 bg-white inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -84,8 +98,6 @@ $row = mysqli_fetch_row($euq);
         </ul>
         </div>
         </div>
-        <?php
-      }
-      ?>
+
 </body>
 </html>
